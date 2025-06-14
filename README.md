@@ -1,6 +1,6 @@
 ---
 
-````markdown
+````
 # DQN Trading Signal Optimization
 
 This repository contains a baseline Deep Q-Network (DQN) implementation for trading signal generation with hyperparameter optimization powered by Optuna and experiment tracking via Weights & Biases (W&B).
