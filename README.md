@@ -1,5 +1,3 @@
----
-
 ````
 # DQN Trading Signal Optimization
 
