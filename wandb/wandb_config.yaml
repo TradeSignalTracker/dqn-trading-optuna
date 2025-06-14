@@ -1,0 +1,11 @@
+batch_size: 128          # Number of samples per training batch (backprop step)
+episodes: 100            # Total number of training episodes (full environment runs)
+eps_decay: 2304          # Epsilon decay rate for epsilon-greedy policy (higher = slower decay)
+eps_end: 0.02751         # Minimum epsilon value (lowest random action probability)
+eps_start: 0.85272       # Starting epsilon value (initial random action probability)
+gamma: 0.94355           # Discount factor for future rewards (closer to 1 = long-term focus)
+lr: 0.00006400           # Learning rate for AdamW optimizer
+tau: 0.01                # Soft update rate for target network
+memory_size: 10000       # Replay buffer size (experience memory)
+reward_scale: 1.0        # Scaling factor for rewards (adjust impact of rewards)
+wandb: true              # Enable Weights & Biases logging
