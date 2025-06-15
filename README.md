@@ -133,8 +133,3 @@ MIT License — feel free to use and modify.
 For questions or contributions, reach out to [druilsenctr@gmail.com](mailto:druilsenctr@gmail.com).
 
 ```
-git commit -m "Add Trial 13 W&B charts and config to README"
-git push
-````
-
-Хочеш — можу автоматизувати це як `docs/gen_readme.py`, який підтягує з `optuna_models/` активну конфігурацію та графіки.
