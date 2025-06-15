@@ -1,4 +1,8 @@
+Ось повністю оновлений `README.md`, з інтегрованими графіками та конфігом із **trial 13**, готовий до викладки на GitHub:
+
 ---
+
+````markdown
 # DQN Trading Signal Optimization
 
 This repository contains a baseline Deep Q-Network (DQN) implementation for trading signal generation with hyperparameter optimization powered by Optuna and experiment tracking via Weights & Biases (W&B).
@@ -9,7 +13,8 @@ This repository contains a baseline Deep Q-Network (DQN) implementation for trad
 
 We train a DQN agent to learn trading strategies on financial time series data using reinforcement learning. Optuna is used for efficient hyperparameter tuning, while W&B logs training metrics and model artifacts.
 
-Key features:
+### Key Features
+
 - Modular PyTorch-based DQN training pipeline
 - Hyperparameter search with Optuna (supports pruning)
 - GPU memory monitoring during training
@@ -75,8 +80,41 @@ Main hyperparameters tuned by Optuna:
 
 ## Data
 
-Place your financial time series CSV files (e.g. `EURUSD30.csv`) in the `/` folder.
+Place your financial time series CSV files (e.g. `EURUSD30.csv`) in the project root or a specified `/data/` folder.
 Modify `train.py` or data loading scripts if needed to match your dataset.
+
+---
+
+## ✅ Sample Trial — Run #13
+
+The following metrics were logged during one of the best runs (trial 13):
+
+### Average Reward Over Time
+
+![Average Reward](docs/assets/wandb_chart_1.png)
+
+### Epsilon and Loss Metrics
+
+![Epsilon and Loss](docs/assets/wandb_chart_2.png)
+
+### Trial 13 Configuration
+
+```yaml
+batch_size: 128
+early_stop_patience: 20
+episodes: 55
+eps_decay: 841
+eps_end: 0.03708619719247948
+eps_start: 0.8431333228793039
+gamma: 0.9054965016193754
+lr: 0.0006181456255736161
+memory_size: 10000
+model_dir: optuna_models/trial_13
+reward_scale: 1.0
+run_name: trial_13
+tau: 0.015858218049624916
+wandb: true
+```
 
 ---
 
@@ -97,8 +135,26 @@ MIT License — feel free to use and modify.
 
 ## Contact
 
-For questions or contributions, reach out to \[[druilsenctr@gmail.com](mailto:druilsenctr@gmail.com)].
+For questions or contributions, reach out to [druilsenctr@gmail.com](mailto:druilsenctr@gmail.com).
 
-```
+````
 
 ---
+
+### 📌 Додаткові кроки
+
+1. 📁 **Розмісти файли:**
+
+   - `docs/assets/wandb_chart_1.png`
+   - `docs/assets/wandb_chart_2.png`
+   - `optuna_models/trial_13/config.yaml`
+
+2. 🔧 **Git add + commit:**
+
+```bash
+git add README.md docs/assets/*.png optuna_models/trial_13/config.yaml
+git commit -m "Add Trial 13 W&B charts and config to README"
+git push
+````
+
+Хочеш — можу автоматизувати це як `docs/gen_readme.py`, який підтягує з `optuna_models/` активну конфігурацію та графіки.
