@@ -1,0 +1,14 @@
+batch_size: 128
+early_stop_patience: 20
+episodes: 55
+eps_decay: 841
+eps_end: 0.03708619719247948
+eps_start: 0.8431333228793039
+gamma: 0.9054965016193754
+lr: 0.0006181456255736161
+memory_size: 10000
+model_dir: optuna_models/trial_13
+reward_scale: 1.0
+run_name: trial_13
+tau: 0.015858218049624916
+wandb: true
