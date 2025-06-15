@@ -132,22 +132,7 @@ MIT License — feel free to use and modify.
 
 For questions or contributions, reach out to [druilsenctr@gmail.com](mailto:druilsenctr@gmail.com).
 
-````
-
----
-
-### 📌 Додаткові кроки
-
-1. 📁 **Розмісти файли:**
-
-   - `docs/assets/wandb_chart_1.png`
-   - `docs/assets/wandb_chart_2.png`
-   - `optuna_models/trial_13/config.yaml`
-
-2. 🔧 **Git add + commit:**
-
-```bash
-git add README.md docs/assets/*.png optuna_models/trial_13/config.yaml
+```
 git commit -m "Add Trial 13 W&B charts and config to README"
 git push
 ````
