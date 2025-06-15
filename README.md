@@ -86,9 +86,9 @@ The following metrics were logged during one of the best runs (trial 13):
 
 ### Average Reward Over Time
 
-![Average Reward](docs/assets/W%26B%20Chart%206_15_2025,%2010_19_46%20PM.png)
+![Episode Reward](docs/assets/W%26B%20Chart%206_15_2025,%2010_19_46%20PM.png)
 
-![Epsilon and Loss](docs/assets/W%26B%20Chart%206_15_2025,%2010_20_36%20PM.png)
+![Average Reward](docs/assets/W%26B%20Chart%206_15_2025,%2010_20_36%20PM.png)
 
 ### Trial 13 Configuration
 
