@@ -1,8 +1,3 @@
-Ось повністю оновлений `README.md`, з інтегрованими графіками та конфігом із **trial 13**, готовий до викладки на GitHub:
-
----
-
-````markdown
 # DQN Trading Signal Optimization
 
 This repository contains a baseline Deep Q-Network (DQN) implementation for trading signal generation with hyperparameter optimization powered by Optuna and experiment tracking via Weights & Biases (W&B).
