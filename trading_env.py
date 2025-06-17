@@ -5,38 +5,60 @@ from dm_env import specs
 from typing import Optional
 
 class TradingEnv(dm_env.Environment):
-    def __init__(self, raw_data: np.ndarray, raw_data_h4: Optional[np.ndarray] = None):
+    def __init__(self, raw_data: np.ndarray, raw_data_h4: Optional[np.ndarray] = None, env_config: Optional[dict] = None):
         self.raw_data = raw_data
         self.raw_data_h4 = raw_data_h4
+        self.env_config = env_config or {}
 
-        # RSI from M30
+        # === Trailing settings ===
+        self.trailing_gap = self.env_config.get("trailing_gap", 0.002)
+
+        # === RSI M30 ===
         self.rsi = self._compute_rsi(self.raw_data[:, 3], window=14)
 
-        # RSI from H4 (optional, disabled for now)
-        # if self.raw_data_h4 is not None:
-        #     self.rsi_h4 = self._compute_rsi(self.raw_data_h4[:, 3], window=14)
-        #     self.rsi_h4_interpolated = np.repeat(self.rsi_h4, 8)[:len(self.raw_data)]
-        # else:
-        #     self.rsi_h4_interpolated = np.zeros(len(self.raw_data))
+        # === RSI H4 + align to M30 ===
+        if self.raw_data_h4 is not None:
+            self.rsi_h4 = self._compute_rsi(self.raw_data_h4[:, 3], window=14)
+            self.rsi_h4_interpolated = self._align_h4_to_base(self.raw_data, self.raw_data_h4, self.rsi_h4)
+        else:
+            self.rsi_h4_interpolated = np.full(len(self.raw_data), 50.0)  # neutral RSI value
 
-        # Combine base data with indicators
+        # === EMA-14 ===
+        self.ema14 = self._compute_ema(self.raw_data[:, 3], window=14)
+
+        # === Feature scaling ===
+        from sklearn.preprocessing import MinMaxScaler
+
+        ohlcv = self.raw_data  # shape [T, 5]
+        ohlcv_scaled = MinMaxScaler().fit_transform(ohlcv)
+
+        rsi_scaled = (self.rsi / 100.0).reshape(-1, 1)
+        rsi_h4_scaled = (self.rsi_h4_interpolated / 100.0).reshape(-1, 1)
+        ema_scaled = (self.ema14 / self.raw_data[:, 3]).reshape(-1, 1)  # EMA as ratio to price
+
+        # === Final observation ===
         self.data = np.hstack([
-            self.raw_data,                          # OHLCV (5 columns)
-            self.rsi.reshape(-1, 1),                # M30 RSI
-            # self.rsi_h4_interpolated.reshape(-1, 1) # H4 RSI
+            ohlcv_scaled,       # OHLCV (5)
+            rsi_scaled,         # RSI M30 (1)
+            rsi_h4_scaled,      # RSI H4 (1)
+            ema_scaled          # EMA14 / Close (1)
         ])
 
-        # Initial internal state
+        # === Environment state ===
         self.current_step = 14
         self.position = 0
         self.done = False
-        
-        self.trailing_gap = 0.002
+
         self.entry_price = None
         self.trailing_stop = None
 
-        self._obs_spec = specs.Array(shape=(self.data.shape[1] + 1,), dtype=np.float32, name='observation')
-        self._action_spec = specs.BoundedArray(shape=(), dtype=np.int32, minimum=-1, maximum=1, name='action')
+        # === Specs ===
+        self._obs_spec = specs.Array(
+            shape=(self.data.shape[1] + 1,), dtype=np.float32, name='observation'
+        )
+        self._action_spec = specs.BoundedArray(
+            shape=(), dtype=np.int32, minimum=-1, maximum=1, name='action'
+        )
 
         self._last_price = self.raw_data[self.current_step, 3]
 
@@ -66,7 +88,7 @@ class TradingEnv(dm_env.Environment):
         current_price = self.raw_data[self.current_step, 3]
         reward = 0.0
 
-        # === TRAILING STOP LOGIC ===
+        # === Trailing logic ===
         if self.position != 0:
             if self.trailing_stop is not None:
                 if self.position == 1:
@@ -84,7 +106,7 @@ class TradingEnv(dm_env.Environment):
                         self.entry_price = None
                         self.trailing_stop = None
 
-        # === AGENT ACTION ===
+        # === Agent actions ===
         if self.position == 0 and action != 0:
             self.position = action
             self.entry_price = current_price
