@@ -9,3 +9,5 @@ tau: 0.01                # Soft update rate for target network
 memory_size: 10000       # Replay buffer size (experience memory)
 reward_scale: 1.0        # Scaling factor for rewards (adjust impact of rewards)
 wandb: true              # Enable Weights & Biases logging
+early_stop_patience: 30      # Number of episodes without improvement before early stopping
+model_dir: optuna_models      # Directory to save trained models
